@@ -11,6 +11,12 @@
       "nome": "Chico Coins",
       "email": "Chiquinho@gmail.com",
       "senha": "11"
+    },
+    {
+      "id": "6bc0",
+      "nome": "Arturito",
+      "email": "arturito@gmail.com",
+      "senha": "123"
     }
   ]
 }
