@@ -1,10 +1,13 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Container from 'react-bootstrap/esm/Container';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import Form from 'react-bootstrap/Form';
 import Alert from 'react-bootstrap/Alert';
 import Button from 'react-bootstrap/Button';
 import Nav from 'react-bootstrap/Nav'
+
+const url = "http://localhost:5000/usuarios"
+
 
 const Login = () => {
 
@@ -17,7 +20,26 @@ const Login = () => {
     // Variaveis pro alerta
     const [alertaClass,setAlertaClass] = useState('mb-3 d-none')
     const [alertaMensagem,setAlertaMensagem] = useState('')
-    
+    const [alertaVariante,setAlertaVariante] = useState('danger')
+
+    // Lista de usuarrios
+    const [usuarios, setUsuarios] = useState([])
+    // Resgatando dados da API
+    useEffect(() => {
+        async function fetchData() {
+            try {
+                
+                const res = await fetch(url)
+                const users = await res.json()
+                setUsuarios(users)
+
+            } catch (error) {
+                console.log(error.message)
+            }
+        }
+        fetchData()
+    } , [])
+
   return (
     <div>
 
@@ -56,18 +78,18 @@ const Login = () => {
 
                 
 
-                <Alert key='danger' variant={alertaClass} >
+                <Alert key='danger' variant={alertaVariante} >
                     {alertaMensagem}
                 </Alert>
 
                 <Button variant="primary" >
-                    Cadastrar
+                    Logar
                 </Button>
 
                 <h3>
-                    Já tem cadastro? 
-                    <Nav.Link href= "/login">
-                        Login
+                    Não tem cadastro? 
+                    <Nav.Link href= "/cadastro">
+                        Cadastra-se
                     </Nav.Link>
                 </h3>
             </form>

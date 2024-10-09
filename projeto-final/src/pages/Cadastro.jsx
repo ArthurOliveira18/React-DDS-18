@@ -5,9 +5,13 @@ import Form from 'react-bootstrap/Form';
 import Alert from 'react-bootstrap/Alert';
 import Button from 'react-bootstrap/Button';
 import Nav from 'react-bootstrap/Nav'
+import {useNavigate} from 'react-router-dom'
+
+
+const url = "http://localhost:5000/usuarios"
 
 const Cadastro = () => {
-
+    
     // Variaveis pro usuario
     const [nome,setNome] = useState('')
     const [email,setEmail] = useState('')
@@ -17,6 +21,45 @@ const Cadastro = () => {
     // Variaveis pro alerta
     const [alertaClass,setAlertaClass] = useState('mb-3 d-none')
     const [alertaMensagem,setAlertaMensagem] = useState('')
+
+    const navigate = useNavigate()
+
+    //Função para cadastrar usuarios
+    const handleSubmit = async (e) =>{
+        e.preventDefault()
+
+        if(!nome == ""){
+            if(!email== ""){
+                if(!senha== "" && !confirmaSenha == "" && senha === confirmaSenha ){
+                    console.log('Entrei')
+                    const user = {nome, email, senha}
+                    const res = await fetch(url ,{
+                        method: 'POST',
+                        headers: {'Content-Type' : 'application/json'},
+                        body: JSON.stringify(user)
+                    })
+                    
+                    alert('Úsuario cadastrado com sucesso')
+                    setNome('')
+                    setEmail('')
+                    setSenha('')
+                    setConfirmaSenha('')
+                    navigate('/login')
+                } else{
+                    setAlertaClass('mb-3')
+                    setAlertaMensagem('As senhas não são iguais')
+                }
+
+            } else{
+                setAlertaClass('mb-3')
+                setAlertaMensagem('O campo email não pode ser vazio')
+            }
+
+        } else{
+            setAlertaClass("mb-3")
+            setAlertaMensagem('O campo nome não pode ser vazio')
+        }
+    }
     
   return (
     <div>
@@ -28,7 +71,7 @@ const Cadastro = () => {
         </span>
 
             {/* Caixinha do nome */}   
-            <form>
+            <form onSubmit={handleSubmit}>
                 <FloatingLabel
                     controlId="floatingInputName"
                     label="Nome"
@@ -37,6 +80,7 @@ const Cadastro = () => {
                     type="text"
                     placeholder="Digite seu nome"
                     value={nome}
+                   
                     onChange={(e) => {setNome(e.target.value)}} />
                 </FloatingLabel>
 
@@ -49,21 +93,24 @@ const Cadastro = () => {
                     type="email"
                     placeholder="name@example.com" 
                     value={email}
-                    onChange={(e) => {setNome(e.target.value)}}
+                    
+                    onChange={(e) => {setEmail(e.target.value)}}
                     />
                 </FloatingLabel>
 
-                {/* Caixinha da confirmação de senha */}
+                {/* Caixinha da  senha */}
                 <FloatingLabel controlId="floatingPassword" label="Senha">
                     <Form.Control 
                     type="password"
                     placeholder="Password" 
                     className="mb-3" 
                     value={senha}
+                    
                     onChange={(e) => {setSenha(e.target.value)}}
                     />
                 </FloatingLabel>
 
+                {/* Caixinha de confirmação de senha */}
                 <FloatingLabel controlId="floatingConfirmPassword" label="Confirme Senha">
                     <Form.Control 
                     type="password"
@@ -74,11 +121,11 @@ const Cadastro = () => {
                     />
                 </FloatingLabel>
 
-                <Alert key='danger' variant={alertaClass} >
+                <Alert key='danger' variant='danger' className={alertaClass} >
                     {alertaMensagem}
                 </Alert>
 
-                <Button variant="primary" >
+                <Button variant="primary" type='submit'>
                     Cadastrar
                 </Button>
 

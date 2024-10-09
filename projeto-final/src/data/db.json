@@ -1,12 +1,16 @@
 {
-
-    "usuarios": [
-        {
-            "id":1,
-            "nome" :"principal",
-            "email": "principal@gmail.com",
-            "senha": "1234"
-        }
-    ]
-
+  "usuarios": [
+    {
+      "id": "1",
+      "nome": "principal",
+      "email": "principal@gmail.com",
+      "senha": "1234"
+    },
+    {
+      "id": "ae35",
+      "nome": "Chico Coins",
+      "email": "Chiquinho@gmail.com",
+      "senha": "11"
+    }
+  ]
 }
